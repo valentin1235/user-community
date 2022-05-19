@@ -1,4 +1,4 @@
-package zaritalk.community.app.controller.domain;
+package zaritalk.community.app.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,9 +47,6 @@ public class Like {
         Like like = new Like();
         like.posting = posting;
         like.user = user;
-
-        posting.getLikes().add(like);
-        user.getLikes().add(like);
 
         return like;
     }

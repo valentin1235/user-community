@@ -26,7 +26,6 @@ import javax.validation.constraints.NotEmpty;
 @RestController
 @RequiredArgsConstructor
 public class CommentController {
-    final private PostingService postingService;
     final private CommentService commentService;
 
     @PostMapping("/comments/comment")

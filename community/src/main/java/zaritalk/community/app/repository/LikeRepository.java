@@ -1,22 +1,9 @@
-package zaritalk.community.repository;
+package zaritalk.community.app.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import zaritalk.community.app.controller.domain.Like;
+import org.springframework.data.jpa.repository.JpaRepository;
+import zaritalk.community.app.domain.Like;
 
-import javax.persistence.EntityManager;
+public interface LikeRepository extends JpaRepository<Like, Long> {
 
-@Repository
-@RequiredArgsConstructor
-public class LikeRepository {
-
-    private final EntityManager em;
-
-    public void save(Like like) {
-        this.em.persist(like);
-    }
-
-    public Like findOne(Long likeId) {
-        return this.em.find(Like.class, likeId);
-    }
+    Like save(Like like);
 }

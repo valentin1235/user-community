@@ -1,4 +1,4 @@
-package zaritalk.community.app.controller.domain;
+package zaritalk.community.app.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class Posting {
     private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL)
+    @OrderBy(value = "createdAt DESC")
     private List<Comment> comments = new ArrayList<>();
 
     // methods
@@ -80,5 +82,42 @@ public class Posting {
 
     public void remove() {
         this.isDeleted = true;
+    }
+
+    public String getDisplayName() {
+        final StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(this.user.getNickname())
+                .append('(')
+                .append(this.user.getAccountType().toString())
+                .append(')');
+
+        return nameBuilder.toString();
+    }
+
+    public int getLikeCount() {
+        List<Like> likes = this.likes;
+        int c = 0;
+        for (Like like : likes) {
+            if (!like.isDeleted()) {
+                ++c;
+            }
+        }
+
+        return c;
+    }
+
+    public boolean isLikedBy(User userOrNull) {
+        if (userOrNull == null) {
+            return false;
+        }
+
+        List<Like> likes = this.likes;
+        for (Like like : likes) {
+            if (!like.isDeleted() && like.getUser().equals(userOrNull)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

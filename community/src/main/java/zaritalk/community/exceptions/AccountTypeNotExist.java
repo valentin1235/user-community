@@ -1,4 +1,4 @@
-package zaritalk.community.errors;
+package zaritalk.community.exceptions;
 
 public class AccountTypeNotExist extends RuntimeException{
 

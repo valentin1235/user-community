@@ -1,4 +1,4 @@
-package zaritalk.community.app.controller.domain;
+package zaritalk.community.app.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Table(name = "comments")
-@Where(clause = "is_deleted=false")
+@Where(clause = "is_deleted=false AND parent_comments_id IS NULL")
 public class Comment {
     @Id @GeneratedValue
     @Column(name = "id")
@@ -46,7 +47,7 @@ public class Comment {
     // relations
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comments_id")
-    private Comment parentComment;
+    private Comment parentComment = null;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
     private List<Comment> childComments = new ArrayList<>();
@@ -66,9 +67,6 @@ public class Comment {
         comment.posting = posting;
         comment.user = user;
 
-        posting.getComments().add(comment);
-        user.getComments().add(comment);
-
         return comment;
     }
 
@@ -78,19 +76,32 @@ public class Comment {
         childComment.posting = posting;
         childComment.user = user;
 
-        user.getComments().add(childComment);
-
         this.childComments.add(childComment);
         childComment.parentComment = this;
 
         return childComment;
     }
 
+    public void update(String newContent) {
+        this.content = newContent;
+    }
+
     public void remove() {
-        this.user.getComments().remove(this);
-        this.posting.getComments().remove(this);
-        this.parentComment.getChildComments().remove(this);
+        List<Comment> comments = this.childComments;
+        for (Comment comment : comments) {
+            comment.isDeleted = true;
+        }
 
         this.isDeleted = true;
+    }
+
+    public String getDisplayName() {
+        final StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(this.user.getNickname())
+                .append('(')
+                .append(this.user.getAccountType().toString())
+                .append(')');
+
+        return nameBuilder.toString();
     }
 }

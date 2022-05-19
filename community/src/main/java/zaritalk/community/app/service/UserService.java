@@ -1,14 +1,14 @@
-package zaritalk.community.service;
+package zaritalk.community.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import zaritalk.community.app.controller.domain.AccountTypeConvertor;
-import zaritalk.community.app.controller.domain.User;
+import zaritalk.community.app.domain.AccountTypeConvertor;
+import zaritalk.community.app.domain.User;
 import zaritalk.community.enums.EAccountType;
 import zaritalk.community.exceptions.AccountTypeNotExist;
 import zaritalk.community.exceptions.DuplicateUser;
-import zaritalk.community.repository.UserRepository;
+import zaritalk.community.app.repository.UserRepository;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void save(String accountId, String nickname, String accountTypeString) {
-        List<User> users = this.findAll();
+        List<User> users = userRepository.findAllByOrderByCreatedAtDesc();
         for (User user : users) {
             if (user.getAccountId().equals(accountId)) {
                 throw new DuplicateUser("Duplicated User");
@@ -36,7 +36,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User findOneOrNull(Long userId) {
+        return userRepository.findById(userId).get();
+    }
+
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByCreatedAtDesc();
     }
 }

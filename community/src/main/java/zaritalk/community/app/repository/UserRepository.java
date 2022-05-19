@@ -1,29 +1,17 @@
-package zaritalk.community.repository;
+package zaritalk.community.app.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import zaritalk.community.app.controller.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import zaritalk.community.app.domain.Posting;
+import zaritalk.community.app.domain.User;
 
-import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class UserRepository {
-    private final EntityManager em;
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    public void save(User user) {
-        this.em.persist(user);
-    }
+    User save(User posting);
 
-    public User findOneOrNull(Long userId) {
-        final User user = em.find(User.class, userId);
+    Optional<User> findById(Long id);
 
-        return user;
-    }
-
-    public List<User> findAll() {
-        return this.em.createQuery("select u from User u where u.quit = false", User.class)
-                .getResultList();
-    }
+    List<User> findAllByOrderByCreatedAtDesc();
 }

@@ -1,43 +1,57 @@
-package zaritalk.community.service;
+package zaritalk.community.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import zaritalk.community.app.controller.domain.AccountTypeConvertor;
-import zaritalk.community.app.controller.domain.Like;
-import zaritalk.community.app.controller.domain.Posting;
-import zaritalk.community.app.controller.domain.User;
+import zaritalk.community.app.domain.AccountTypeConvertor;
+import zaritalk.community.app.domain.Like;
+import zaritalk.community.app.domain.Posting;
+import zaritalk.community.app.domain.User;
+import zaritalk.community.app.repository.CommentRepository;
+import zaritalk.community.app.repository.PostingRepository;
+import zaritalk.community.app.repository.UserRepository;
 import zaritalk.community.enums.EAccountType;
 import zaritalk.community.enums.ELikeResult;
 import zaritalk.community.exceptions.AccountTypeMismatch;
 import zaritalk.community.exceptions.NotAuthorized;
 import zaritalk.community.exceptions.PostingNotFound;
 import zaritalk.community.exceptions.UserNotFound;
-import zaritalk.community.repository.LikeRepository;
-import zaritalk.community.repository.PostingRepository;
-import zaritalk.community.repository.UserRepository;
+import zaritalk.community.app.repository.LikeRepository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PostingService {
 
+    public final LikeRepository likeRepository;
+    public final CommentRepository commentRepository;
+
     public final UserRepository userRepository;
     public final PostingRepository postingRepository;
-    public final LikeRepository likeRepository;
 
     public List<Posting> getPostings() {
-        return postingRepository.findAll();
+        return postingRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public Posting getPosting(Long postingId) {
+        Optional<Posting> posting = postingRepository.findById(postingId);
+        if (!posting.isPresent()) {
+            throw new PostingNotFound("Posting Not Found");
+        }
+
+        return posting.get();
     }
 
     public void createPosting(String title, String content, Long userId, String accountTypeString) {
-        User user = userRepository.findOneOrNull(userId);
-        if (user == null || user.isQuit()) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
             throw new UserNotFound("User Not Found");
         }
+        User user = userOptional.get();
 
         EAccountType accountType = AccountTypeConvertor.convertStringToAttribute(accountTypeString);
         if (accountType != user.getAccountType()) {
@@ -49,10 +63,11 @@ public class PostingService {
     }
 
     public void updatePosting(String newTitle, String newContent, Long postingId, Long userId, String accountTypeString) {
-        Posting posting = postingRepository.findOneOrNull(postingId);
-        if (posting == null || posting.isDeleted()) {
+        Optional<Posting> postingOptional = postingRepository.findById(postingId);
+        if (!postingOptional.isPresent()) {
             throw new PostingNotFound("Posting Not Found");
         }
+        Posting posting = postingOptional.get();
 
         if (!Objects.equals(posting.getUser().getId(), userId)) {
             throw new NotAuthorized("Not Authorized");
@@ -67,10 +82,11 @@ public class PostingService {
     }
 
     public void deletePosting(Long postingId, Long userId, String accountTypeString) {
-        Posting posting = postingRepository.findOneOrNull(postingId);
-        if (posting == null || posting.isDeleted()) {
+        Optional<Posting> postingOptional = postingRepository.findById(postingId);
+        if (!postingOptional.isPresent()) {
             throw new PostingNotFound("Posting Not Found");
         }
+        Posting posting = postingOptional.get();
 
         if (!Objects.equals(posting.getUser().getId(), userId)) {
             throw new NotAuthorized("Not Authorized");
@@ -85,15 +101,17 @@ public class PostingService {
     }
 
     public ELikeResult like(Long postingId, Long userId, String accountTypeString) {
-        Posting posting = postingRepository.findOneOrNull(postingId);
-        if (posting == null || posting.isDeleted()) {
+        Optional<Posting> postingOptional = postingRepository.findById(postingId);
+        if (!postingOptional.isPresent()) {
             throw new PostingNotFound("Posting Not Found");
         }
+        Posting posting = postingOptional.get();
 
-        User user = userRepository.findOneOrNull(userId);
-        if (user == null || user.isQuit()) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
             throw new UserNotFound("User Not Found");
         }
+        User user = userOptional.get();
 
         EAccountType accountType = AccountTypeConvertor.convertStringToAttribute(accountTypeString);
         if (accountType != posting.getUser().getAccountType()) {
@@ -114,8 +132,11 @@ public class PostingService {
 
         }
 
-        Like.create(posting, user);
+        Like like = Like.create(posting, user);
+        likeRepository.save(like);
 
         return ELikeResult.CREATED;
     }
+
+
 }

@@ -1,6 +1,7 @@
-package zaritalk.community.app.controller.domain;
+package zaritalk.community.app.domain;
 
 import zaritalk.community.enums.EAccountType;
+
 import javax.persistence.AttributeConverter;
 
 public class AccountTypeConvertor implements AttributeConverter<EAccountType, Integer> {

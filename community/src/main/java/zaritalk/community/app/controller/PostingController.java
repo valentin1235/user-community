@@ -13,15 +13,14 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import zaritalk.community.app.domain.Comment;
-import zaritalk.community.app.domain.Like;
 import zaritalk.community.app.domain.Posting;
 import zaritalk.community.app.domain.User;
+import zaritalk.community.app.service.UserService;
 import zaritalk.community.enums.ELikeResult;
 import zaritalk.community.exceptions.AccountTypeMismatch;
 import zaritalk.community.exceptions.NotAuthorized;
 import zaritalk.community.exceptions.PostingNotFound;
 import zaritalk.community.exceptions.UserNotFound;
-import zaritalk.community.app.repository.UserRepository;
 import zaritalk.community.app.service.PostingService;
 
 import javax.validation.Valid;
@@ -35,13 +34,13 @@ import java.util.List;
 public class PostingController {
 
     private final PostingService postingService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/postings")
     public ResponseEntity getPostings(@RequestAttribute("userId") Long userId) {
         List<PostingsDto> result = new ArrayList<>();
         List<Posting> postings = postingService.getPostings();
-        User user = userRepository.findOneOrNull(userId);
+        User user = userService.findOneOrNull(userId);
         for (Posting posting : postings) {
             result.add(new PostingsDto(posting, user));
         }
@@ -53,7 +52,7 @@ public class PostingController {
     public ResponseEntity getPosting(@RequestAttribute("userId") Long userId,
                                         @PathVariable("postingId") Long postingId) {
         try {
-            User user = userRepository.findOneOrNull(userId);
+            User user = userService.findOneOrNull(userId);
             Posting posting = postingService.getPosting(postingId);
             PostingDetailDto result = new PostingDetailDto(posting, user);
 

@@ -1,4 +1,4 @@
-package zaritalk.community.app.controller.domain;
+package zaritalk.community.app.domain;
 
 import lombok.Getter;
 import lombok.Setter;
