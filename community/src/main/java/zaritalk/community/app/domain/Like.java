@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 @Table(name = "likes")
+@Where(clause = "is_deleted=false")
 public class Like {
 
     @Id @GeneratedValue
@@ -48,14 +50,21 @@ public class Like {
         like.posting = posting;
         like.user = user;
 
+        user.getLikes().add(like);
+        posting.getLikes().add(like);
+
         return like;
     }
 
     public void deactivate() {
+        this.user.getLikes().remove(this);
+        this.posting.getLikes().remove(this);
         this.isDeleted = true;
     }
 
     public void activate() {
+        this.user.getLikes().add(this);
+        this.posting.getLikes().add(this);
         this.isDeleted = false;
     }
 }

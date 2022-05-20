@@ -19,7 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void save(String accountId, String nickname, String accountTypeString) {
+    public User save(String accountId, String nickname, String accountTypeString) {
         List<User> users = userRepository.findAllByOrderByCreatedAtDesc();
         for (User user : users) {
             if (user.getAccountId().equals(accountId)) {
@@ -33,13 +33,15 @@ public class UserService {
         }
 
         User user = User.create(accountId, nickname, accountType);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     public User findOneOrNull(Long userId) {
         return userRepository.findById(userId).get();
     }
 
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAllByOrderByCreatedAtDesc();
     }

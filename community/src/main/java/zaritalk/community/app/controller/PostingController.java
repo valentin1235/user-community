@@ -101,7 +101,7 @@ public class PostingController {
             postingService.deletePosting(postingId, userId, accountType);
 
             return new ResponseEntity<>(null, null, HttpStatus.OK);
-        } catch (UserNotFound e) {
+        } catch (PostingNotFound e) {
             return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
         } catch (AccountTypeMismatch | NotAuthorized e) {
             return new ResponseEntity<>(e.getMessage(), null, HttpStatus.UNAUTHORIZED);
@@ -176,7 +176,7 @@ public class PostingController {
             this.createdAt = posting.getCreatedAt();
 
             this.displayUserName = posting.getDisplayName();
-            this.likeCount = posting.getLikeCount();
+            this.likeCount = posting.getLikes().size();
             this.isLiked = posting.isLikedBy(userOrNull);
 
             List<Comment> comments = posting.getComments();
@@ -205,7 +205,7 @@ public class PostingController {
             this.createdAt = posting.getCreatedAt();
 
             this.displayUserName = posting.getDisplayName();
-            this.likeCount = posting.getLikeCount();
+            this.likeCount = posting.getLikes().size();
             this.isLiked = posting.isLikedBy(userOrNull);
         }
     }

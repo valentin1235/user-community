@@ -33,10 +33,12 @@ public class PostingService {
     public final UserRepository userRepository;
     public final PostingRepository postingRepository;
 
+    @Transactional(readOnly = true)
     public List<Posting> getPostings() {
         return postingRepository.findAllByOrderByCreatedAtDesc();
     }
 
+    @Transactional(readOnly = true)
     public Posting getPosting(Long postingId) {
         Optional<Posting> posting = postingRepository.findById(postingId);
         if (!posting.isPresent()) {
@@ -46,7 +48,7 @@ public class PostingService {
         return posting.get();
     }
 
-    public void createPosting(String title, String content, Long userId, String accountTypeString) {
+    public Posting createPosting(String title, String content, Long userId, String accountTypeString) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             throw new UserNotFound("User Not Found");
@@ -59,7 +61,7 @@ public class PostingService {
         }
 
         Posting posting = Posting.create(title, content, user);
-        postingRepository.save(posting);
+        return postingRepository.save(posting);
     }
 
     public void updatePosting(String newTitle, String newContent, Long postingId, Long userId, String accountTypeString) {
@@ -114,7 +116,7 @@ public class PostingService {
         User user = userOptional.get();
 
         EAccountType accountType = AccountTypeConvertor.convertStringToAttribute(accountTypeString);
-        if (accountType != posting.getUser().getAccountType()) {
+        if (accountType != user.getAccountType()) {
             throw new AccountTypeMismatch("Account Type Mismatch");
         }
 
@@ -123,10 +125,7 @@ public class PostingService {
             if (like.getPosting().equals(posting)) {
                 if (!like.isDeleted()) {
                     like.deactivate();
-                    return ELikeResult.DEACTIVATED;
-                } else {
-                    like.activate();
-                    return ELikeResult.ACTIVATED;
+                    return ELikeResult.DELETED;
                 }
             }
 

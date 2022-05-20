@@ -14,17 +14,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
 @Table(name = "comments")
-@Where(clause = "is_deleted=false AND parent_comments_id IS NULL")
+@Where(clause = "is_deleted=false")
 public class Comment {
     @Id @GeneratedValue
     @Column(name = "id")
@@ -46,13 +42,6 @@ public class Comment {
 
     // relations
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comments_id")
-    private Comment parentComment = null;
-
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
-    private List<Comment> childComments = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postings_id")
     private Posting posting;
 
@@ -70,28 +59,11 @@ public class Comment {
         return comment;
     }
 
-    public Comment reply(String content, Posting posting, User user) {
-        Comment childComment = new Comment();
-        childComment.content = content;
-        childComment.posting = posting;
-        childComment.user = user;
-
-        this.childComments.add(childComment);
-        childComment.parentComment = this;
-
-        return childComment;
-    }
-
     public void update(String newContent) {
         this.content = newContent;
     }
 
     public void remove() {
-        List<Comment> comments = this.childComments;
-        for (Comment comment : comments) {
-            comment.isDeleted = true;
-        }
-
         this.isDeleted = true;
     }
 
@@ -103,5 +75,27 @@ public class Comment {
                 .append(')');
 
         return nameBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Comment)) {
+            return false;
+        }
+
+        Comment other = (Comment)obj;
+        return this.id.equals(other.getId())
+                && this.content.equals(other.getContent())
+                && this.createdAt.equals(other.getCreatedAt())
+                && this.updatedAt.equals(other.getUpdatedAt())
+                && this.isDeleted == other.isDeleted();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode() ^ (this.content.hashCode() >>> 32);
     }
 }

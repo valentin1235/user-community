@@ -94,18 +94,6 @@ public class Posting {
         return nameBuilder.toString();
     }
 
-    public int getLikeCount() {
-        List<Like> likes = this.likes;
-        int c = 0;
-        for (Like like : likes) {
-            if (!like.isDeleted()) {
-                ++c;
-            }
-        }
-
-        return c;
-    }
-
     public boolean isLikedBy(User userOrNull) {
         if (userOrNull == null) {
             return false;
@@ -113,11 +101,34 @@ public class Posting {
 
         List<Like> likes = this.likes;
         for (Like like : likes) {
-            if (!like.isDeleted() && like.getUser().equals(userOrNull)) {
+            if (like.getUser().equals(userOrNull)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Posting)) {
+            return false;
+        }
+
+        Posting other = (Posting)obj;
+        return this.id.equals(other.getId())
+                && this.title.equals(other.getTitle())
+                && this.content.equals(other.getContent())
+                && this.createdAt.equals(other.getCreatedAt())
+                && this.updatedAt.equals(other.getUpdatedAt())
+                && this.isDeleted == other.isDeleted();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode() ^ (this.content.hashCode() >>> 32);
     }
 }

@@ -21,15 +21,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class CommentService {
 
     private final PostingRepository postingRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public void createComment(String content, Long postingId, Long userId, String accountTypeString) {
+    public Comment createComment(String content, Long postingId, Long userId, String accountTypeString) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
             throw new UserNotFound("User Not Found");
@@ -48,7 +48,7 @@ public class CommentService {
         }
 
         Comment comment = Comment.create(content, posting, user);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     public void updateComment(String newContent, Long commentId, Long userId, String accountTypeString) {
@@ -92,7 +92,7 @@ public class CommentService {
         }
 
         /*
-        @TODO UserNotFound, NotAuthorized, AccountTypeMismatch 모듈화시켜서 중복제거
+         * @TODO UserNotFound, NotAuthorized, AccountTypeMismatch 모듈화시켜서 중복제거
          */
         EAccountType accountType = AccountTypeConvertor.convertStringToAttribute(accountTypeString);
         if (accountType != comment.getUser().getAccountType()) {

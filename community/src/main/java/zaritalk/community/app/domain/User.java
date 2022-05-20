@@ -69,4 +69,27 @@ public class User {
 
         return user;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof User)) {
+            return false;
+        }
+
+        User other = (User)obj;
+        return this.id.equals(other.getId())
+                && this.nickname.equals(other.getNickname())
+                && this.accountId.equals(other.getAccountId())
+                && this.createdAt.equals(other.getCreatedAt())
+                && this.updatedAt.equals(other.getUpdatedAt())
+                && this.quit == other.isQuit();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode() ^ (this.accountId.hashCode() >>> 32);
+    }
 }
