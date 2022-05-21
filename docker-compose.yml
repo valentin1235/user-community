@@ -2,15 +2,31 @@ version: "3.7"
 
 services:
   mysql:
-    platform: linux/amd64
-    image: mysql:latest
-    command: --lower_case_table_names=1
+    platform: ${PLATFORM}
+    image: mysql
     volumes:
       - /var/lib/mysql
-    environment: 
-      - MYSQL_PASSWORD=heechul
-      - MYSQL_ROOT_PASSWORD=heechul
-      - MYSQL_DATABASE=heechul
+    environment:
+      - MYSQL_PASSWORD=${PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
     ports:
       - "3306:3306"
-    restart: always
+    networks:
+      - springnet
+
+#  application:
+#    image: app
+#    environment:
+#      - DB_HOST=mysql
+#      - DB_PORT=3306
+#      - MYSQL_PASSWORD=${PASSWORD}
+#      - MYSQL_DATABASE=${DB_NAME}
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - springnet
+
+networks:
+  springnet:
+    driver: bridge

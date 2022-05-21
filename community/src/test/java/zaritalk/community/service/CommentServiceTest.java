@@ -10,8 +10,6 @@ import zaritalk.community.app.domain.Comment;
 import zaritalk.community.app.domain.Posting;
 import zaritalk.community.app.domain.User;
 import zaritalk.community.app.repository.CommentRepository;
-import zaritalk.community.app.repository.PostingRepository;
-import zaritalk.community.app.repository.UserRepository;
 import zaritalk.community.app.service.CommentService;
 import zaritalk.community.enums.EAccountType;
 import zaritalk.community.exceptions.AccountTypeMismatch;
