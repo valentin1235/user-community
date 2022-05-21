@@ -29,7 +29,7 @@ java -jar ./build/libs/community-0.0.1-SNAPSHOT.jar
 - 게시글 생성 `POST /postings/posting` : 게시글을 생성합니다
 - 게시글 수정 `PUT /postings/{postingId}` : 게시글을 수정합니다
 - 게시글 삭제 `DELETE /postings/{postingId}` : 게시글을 삭제합니다(soft delete)
-- 좋아요 `POST /postings/{postingId}/like` : 게시글을 "좋아요"합니다. 이미좋아요 된 게시글에 한번 더 요청하는 경우 "좋아요"를 삭제합니다
+- 좋아요 `POST /postings/{postingId}/like` : 게시글을 "좋아요"합니다. 이미 좋아요 된 게시글에 한번 더 요청하는 경우 "좋아요"를 삭제합니다
 - 댓글 생성 `POST /comments/comment?postingId=` : 댓글을 생성합니다
 - 댓글 수정 `PUT /comments/{commentId}` : 댓글을 수정합니다
 - 댓글 삭제 `DELETE /comments/{commentId}` : 댓글을 삭제합니다
