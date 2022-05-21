@@ -7,11 +7,11 @@ docker run --platform linux/amd64 -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWO
 
 
 ### 실행
-##### 디렉토리 이동
+- 디렉토리 이동
 ```
 cd ./community
 ```
-##### 빌드 및 실행
+- 빌드 및 실행
 ```
 ./gradlew build -x test &&
 java -jar ./build/libs/community-0.0.1-SNAPSHOT.jar
