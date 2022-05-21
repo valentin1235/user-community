@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  mysql:
+    platform: linux/amd64
+    image: mysql:latest
+    command: --lower_case_table_names=1
+    volumes:
+      - /var/lib/mysql
+    environment: 
+      - MYSQL_PASSWORD=heechul
+      - MYSQL_ROOT_PASSWORD=heechul
+      - MYSQL_DATABASE=heechul
+    ports:
+      - "3306:3306"
+    restart: always

@@ -11,6 +11,7 @@ import zaritalk.community.exceptions.DuplicateUser;
 import zaritalk.community.app.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findOneOrNull(Long userId) {
-        return userRepository.findById(userId).get();
+        Optional<User> userOptional = userRepository.findById(userId);
+        return userOptional.orElse(null);
     }
 
     @Transactional(readOnly = true)

@@ -22,19 +22,20 @@ import java.time.LocalDateTime;
 @Where(clause = "is_deleted=false")
 public class Like {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postings_id")
+    @JoinColumn(name = "postings_id", columnDefinition = "BIGINT")
     private Posting posting;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "users_id", columnDefinition = "BIGINT")
     private User user;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", columnDefinition = "TINYINT", length = 1)
     private boolean isDeleted = false;
 
     @Column(name = "created_at")

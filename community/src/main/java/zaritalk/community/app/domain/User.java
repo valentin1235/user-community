@@ -35,11 +35,11 @@ public class User {
     @Column(name = "account_id", length = 100)
     private String accountId;
 
-    @Column(name = "account_type")
+    @Column(name = "account_type", columnDefinition = "TINYINT")
     @Convert(converter = AccountTypeConvertor.class)
     private EAccountType accountType;
 
-    @Column(name = "quit")
+    @Column(name = "quit", columnDefinition = "TINYINT", length = 1)
     private boolean quit = false;
 
     @Column(name = "created_at")
