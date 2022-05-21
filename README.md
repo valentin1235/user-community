@@ -38,7 +38,7 @@ java -jar ./build/libs/community-0.0.1-SNAPSHOT.jar
 ./gradlew test
 ```
 
-### TODO
+### 하면 좋을것들
 - 테스트가 데이터베이스랑 결합되어있어서 각 repository에 해당하는 인터페이스를 만들어서 repository를 사용하는쪽에서는 인터페이스에 의존하도록하고, 프로그램 종료되면 날아가는 메모리디비형태의 repository 구현체를 만들어서 테스트용으로 사용하기
 - 데이터베이스와 어플리케이션을 docker-compose로 묶어서 배포하기
 - service쪽에서 발생하는 예외 `NotAuthorized`, `AccountTypeMismatch`를 어떻게 공통적으로 처리할지 고민해보기
