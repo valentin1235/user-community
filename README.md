@@ -2,6 +2,7 @@
 ```
 docker run --platform linux/amd64 -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=heechul -e MYSQL_DATABASE=heechul -e MYSQL_PASSWORD=heechul -d mysql
 ```
+- Docker가 설치되어있지 않다면 [링크](https://docs.docker.com/get-docker/) 에서 플랫폼에 맞는 도커를 설치합니다
 - MAC M1 사용자가 아니라면 `--platform linux/amd64` 옵션을 지우고 실행바랍니다
 
 
