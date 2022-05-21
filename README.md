@@ -5,15 +5,15 @@
   -d mysql
   ```
 
-### 빌드
-```
-cd ./community \  
-./gradlew build  
-```
 
 ### 실행
+##### 디렉토리 이동
 ```
-cd ./community \  
+cd ./community
+```
+##### 빌드 및 실행
+```
+./gradlew build -x test &&
 java -jar ./build/libs/community-0.0.1-SNAPSHOT.jar
 ```
 
