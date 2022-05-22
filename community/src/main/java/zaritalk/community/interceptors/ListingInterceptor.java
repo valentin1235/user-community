@@ -15,6 +15,9 @@ public class ListingInterceptor implements HandlerInterceptor {
 
             request.setAttribute("accountType", values[0]);
             request.setAttribute("userId", Long.parseLong(values[1]));
+        } else {
+            request.setAttribute("accountType", "none");
+            request.setAttribute("userId", -1);
         }
 
         return true;
