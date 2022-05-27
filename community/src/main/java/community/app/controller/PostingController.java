@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import community.app.domain.Comment;
 import community.app.domain.Posting;
@@ -42,9 +43,14 @@ public class PostingController {
     private final UserService userService;
 
     @GetMapping("/postings")
-    public ResponseEntity getPostings(@RequestAttribute("userId") Long userId, @ModelAttribute("postingSearch") PostingSearch
-            postingSearch) {
-        List<PostingsDto> result = postingService.getPostings(postingSearch, userId);
+    public ResponseEntity getPostings(@RequestAttribute("userId") Long userId,
+                                      @ModelAttribute("postingSearch") PostingSearch postingSearch,
+                                      @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                      @RequestParam(value = "limit", defaultValue = "1000") int limit) {
+        System.out.println("start");
+        System.out.println(offset);
+        System.out.println(limit);
+        List<PostingsDto> result = postingService.getPostings(postingSearch, userId, offset, limit);
 
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }

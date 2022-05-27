@@ -42,14 +42,14 @@ public class PostingService {
 
 
     @Transactional(readOnly = true)
-    public List<PostingsDto> getPostings(PostingSearch postingSearch, Long userId) {
-        List<PostingsDto> postingsDtos = postingQueryRepository.findAll(postingSearch);
+    public List<PostingsDto> getPostings(PostingSearch postingSearch, Long userId, int offset, int limit) {
+        List<PostingsDto> postingsDtos = postingQueryRepository.findAll(postingSearch, offset, limit);
 
         List<Long> ids = postingsDtos.stream().map(PostingsDto::getId).collect(Collectors.toList());
-        List<Tuple> isLikeds = postingQueryRepository.findIsLikeds(ids, userId);
+        List<Tuple> likedList = postingQueryRepository.findLikedList(ids, userId);
 
         Map<Long, List<PostingsDto>> map = postingsDtos.stream().collect(Collectors.groupingBy(PostingsDto::getId));
-        isLikeds.forEach(o -> {
+        likedList.forEach(o -> {
             map.get(o.get(0, Long.class))
                 .get(0)
                 .setLiked(Boolean.TRUE.equals(o.get(1, Boolean.class)));

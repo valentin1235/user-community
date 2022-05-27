@@ -26,7 +26,7 @@ import java.util.List;
 public class PostingQueryRepository {
     private final EntityManager em;
 
-    public List<Tuple> findIsLikeds(List<Long> postingIds, Long userId) {
+    public List<Tuple> findLikedList(List<Long> postingIds, Long userId) {
         JPAQueryFactory query = new JPAQueryFactory(em);
         QPosting posting = QPosting.posting;
         QLike like = QLike.like;
@@ -45,7 +45,7 @@ public class PostingQueryRepository {
                 .fetch();
     }
 
-    public List<PostingsDto> findAll(PostingSearch postingSearch) {
+    public List<PostingsDto> findAll(PostingSearch postingSearch, int offset, int limit) {
         JPAQueryFactory query = new JPAQueryFactory(em);
         QPosting posting = QPosting.posting;
         QUser user = QUser.user;
@@ -71,7 +71,8 @@ public class PostingQueryRepository {
                 )
                 .groupBy(posting.id)
                 .orderBy(posting.createdAt.desc())
-                .limit(1000)
+                .offset(offset)
+                .limit(limit)
                 .fetch();
     }
 
