@@ -82,4 +82,9 @@ JPAExpressions.select( // sub-query start
 - 세번째로로 첫번째에서 가져온 게시글 목록을 게시글 id를 key로 하는 맵으로 만든다.
 - 마지막으로 두번째 단계에서 가져온 "좋아요 여부" 목록을 반복문을 돌면서 세번째에서 만든 맵의 key에 맞게 매핑해준다.
 
-### <  >
+### < OSIV 이슈 >
+##### 상황
+- jpa설정의 open-in-view 플래그의 default가 true로 되어있어서 service에 있는 Transactional로 인해 만들어진 영속성 컨택스트와 db connection이 service에서 나가도 계속 유지되고 응답이 나갈때 반환됨
+- 이럴 경우 controller에서 외부 api를 연동하는 등 다른 동작을 하게되면 데이터베이스 커넥션을 오래 가지고 있기 때문에 controller에 대한 확장성이 사라질것으로 판단
+##### 해결
+- open-in-view 설정을 false로 바꾸어 주어서 service에서 @Transactional이 끝날때 영속성컨텍스트와 db connection을 반환하도록 변경
