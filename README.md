@@ -49,3 +49,19 @@ java -jar ./build/libs/community-0.0.1-SNAPSHOT.jar
 ### jpql 동적쿼리 이슈
 ##### 상황
 - 동적쿼리를 jpql을 통해서 만들기에는 유지보수성이 떨어진다고 판단
+### querydsl 이슈
+```
+JPAExpressions.select( // sub-query start
+    like.id.count()
+            .when(0L)
+            .then(0)
+            .otherwise(1) 
+).from(user)
+    .leftJoin(like)
+    .on(user.id.eq(like.user.id))
+    .on(like.posting.id.eq(posting.id))
+    .where(user.id.eq(userId))
+    .groupBy(user.id)
+    .fetchOne()
+```
+위와같은 서브쿼리를 dto의 필드 하나로 할당해주는데 `JPAExpressions.select`의 반환타입이 `Expression<?>`라서 필드에 할당이 안됨.
