@@ -50,6 +50,7 @@ java -jar ./build/libs/community-0.0.1-SNAPSHOT.jar
 ##### 상황
 - 동적쿼리를 jpql을 통해서 만들기에는 유지보수성이 떨어진다고 판단
 ### querydsl 이슈
+##### 상황
 ```
 JPAExpressions.select( // sub-query start
     like.id.count()
@@ -65,3 +66,8 @@ JPAExpressions.select( // sub-query start
     .fetchOne()
 ```
 위와같은 서브쿼리를 dto의 필드 하나로 할당해주는데 `JPAExpressions.select`의 반환타입이 `Expression<?>`라서 필드에 할당이 안됨.
+##### 해결
+- 첫번째로 게시글 목록을 가져와서 게시글의 id(pk)를 담은 리스트를 만든다.
+- 두번째로 게시글의 id 리스트를 조건에 넣어서 "요청한 유저의 게시글 좋아요 여부"를 쿼리한다.
+- 세번째로로 첫번째에서 가져온 게시글 목록을 게시글 id를 key로 하는 맵으로 만든다.
+- 마지막으로 두번째 단계에서 가져온 "좋아요 여부" 목록을 반복문을 돌면서 세번째에서 만든 맵의 key에 맞게 매핑해준다.
