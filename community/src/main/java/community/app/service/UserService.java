@@ -1,6 +1,7 @@
 package community.app.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import community.app.domain.AccountTypeConvertor;
@@ -40,6 +41,8 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findOneOrNull(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
+        userOptional.ifPresent(u -> Hibernate.initialize(u.getLikes()));
+
         return userOptional.orElse(null);
     }
 

@@ -1,5 +1,7 @@
 package community.service;
 
+import com.querydsl.core.Tuple;
+import community.app.repository.query.PostingQueryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class PostingServiceTest {
     UserRepository userRepository;
     @Autowired
     PostingRepository postingRepository;
+    @Autowired
+    PostingQueryRepository postingQueryRepository;
     @Autowired
     EntityManager em;
 
@@ -298,9 +302,10 @@ public class PostingServiceTest {
         postingService.like(savedPosting.getId(), user1.getId(), "Lessor");
 
         // then
-        Posting posting = postingService.getPosting(savedPosting.getId());
-        assertThat(posting.isLikedBy(user1)).isEqualTo(true);
-        assertThat(posting.isLikedBy(user2)).isEqualTo(false);
+        Tuple user1Liked = postingQueryRepository.findLiked(savedPosting.getId(), user1.getId());
+        Tuple user2Liked = postingQueryRepository.findLiked(savedPosting.getId(), user2.getId());
+        assertThat(user1Liked.get(1, Boolean.class)).isEqualTo(true);
+        assertThat(user2Liked.get(1, Boolean.class)).isEqualTo(false);
     }
 
     @Test

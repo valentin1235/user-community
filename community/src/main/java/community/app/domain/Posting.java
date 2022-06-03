@@ -95,21 +95,6 @@ public class Posting {
         return nameBuilder.toString();
     }
 
-    public boolean isLikedBy(User userOrNull) {
-        if (userOrNull == null) {
-            return false;
-        }
-
-        List<Like> likes = this.likes;
-        for (Like like : likes) {
-            if (like.getUser().equals(userOrNull)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

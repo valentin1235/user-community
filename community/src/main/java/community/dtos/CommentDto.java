@@ -1,6 +1,7 @@
 package community.dtos;
 
-import community.app.domain.Comment;
+import com.querydsl.core.annotations.QueryProjection;
+import community.enums.EAccountType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,11 +14,22 @@ public class CommentDto {
     private String displayUserName;
     private LocalDateTime createdAt;
 
-    public CommentDto(Comment comment) {
-        this.id = comment.getId();
-        this.content = comment.getContent();
-        this.userId = comment.getUser().getId();
-        this.displayUserName = comment.getDisplayName();
-        this.createdAt = comment.getCreatedAt();
+    @QueryProjection
+    public CommentDto(Long id, String content, Long userId, String nickname, EAccountType accountType, LocalDateTime createdAt) {
+        this.id = id;
+        this.content = content;
+        this.userId = userId;
+        this.displayUserName = getDisplayName(nickname, accountType);
+        this.createdAt = createdAt;
+    }
+
+    public String getDisplayName(String nickname, EAccountType accountType) {
+        final StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(nickname)
+                .append('(')
+                .append(accountType.toString())
+                .append(')');
+
+        return nameBuilder.toString();
     }
 }

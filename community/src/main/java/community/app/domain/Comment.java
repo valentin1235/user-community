@@ -67,15 +67,6 @@ public class Comment {
         this.isDeleted = true;
     }
 
-    public String getDisplayName() {
-        final StringBuilder nameBuilder = new StringBuilder();
-        nameBuilder.append(this.user.getNickname())
-                .append('(')
-                .append(this.user.getAccountType().toString())
-                .append(')');
-
-        return nameBuilder.toString();
-    }
 
     @Override
     public boolean equals(Object obj) {

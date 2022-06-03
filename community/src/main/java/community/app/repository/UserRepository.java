@@ -8,9 +8,5 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User save(User posting);
-
-    Optional<User> findById(Long id);
-
     List<User> findAllByOrderByCreatedAtDesc();
 }

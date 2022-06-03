@@ -1,18 +1,15 @@
 package community.app.repository.query;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import community.app.domain.Posting;
 import community.app.domain.QLike;
 import community.app.domain.QPosting;
 import community.app.domain.QUser;
+import community.dtos.PostingDetailDto;
 import community.dtos.PostingsDto;
+import community.dtos.QPostingDetailDto;
 import community.dtos.QPostingsDto;
 import community.searches.PostingSearch;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +40,51 @@ public class PostingQueryRepository {
                 .where(posting.id.in(postingIds))
                 .groupBy(posting.id)
                 .fetch();
+    }
+
+    public Tuple findLiked(Long postingId, Long userId) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QPosting posting = QPosting.posting;
+        QLike like = QLike.like;
+        return query
+                .select(posting.id,
+                        new CaseBuilder()
+                                .when(like.id.count().eq(0L))
+                                .then(false)
+                                .otherwise(true)
+                                .as("isLiked"))
+                .from(posting)
+                .leftJoin(like).on(like.user.id.eq(userId), posting.id.eq(like.posting.id), like.isDeleted.eq(false))
+                .where(posting.id.eq(postingId))
+                .groupBy(posting.id)
+                .fetchOne();
+    }
+
+
+    public PostingDetailDto findOne(Long postingId) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QPosting posting = QPosting.posting;
+        QUser user = QUser.user;
+        QLike like = QLike.like;
+
+        return query
+                .select(new QPostingDetailDto(
+                        posting.id,
+                        posting.title,
+                        posting.content,
+                        user.id,
+                        posting.createdAt,
+                        user.nickname,
+                        user.accountType,
+                        like.id.count())
+                )
+                .from(posting)
+                .leftJoin(posting.user, user)
+                .leftJoin(posting.likes, like)
+                .where(posting.id.eq(postingId))
+                .groupBy(posting.id)
+                .fetchOne();
+
     }
 
     public List<PostingsDto> findAll(PostingSearch postingSearch, int offset, int limit) {

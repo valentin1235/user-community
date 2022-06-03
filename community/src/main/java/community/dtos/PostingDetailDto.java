@@ -1,13 +1,9 @@
 package community.dtos;
 
-import community.app.controller.PostingController;
-import community.app.domain.Comment;
-import community.app.domain.Posting;
-import community.app.domain.User;
+import com.querydsl.core.annotations.QueryProjection;
+import community.enums.EAccountType;
 import lombok.Data;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,25 +13,30 @@ public class PostingDetailDto {
     private String content;
     private Long userId;
     private String displayUserName;
-    private int likeCount;
+    private Long likeCount;
     private LocalDateTime createdAt;
     private boolean isLiked;
-    private List<CommentDto> comments = new ArrayList<>();
+    private List<CommentDto> comments;
 
-    public PostingDetailDto(Posting posting, User userOrNull) {
-        this.id = posting.getId();
-        this.title = posting.getTitle();
-        this.content = posting.getContent();
-        this.userId = posting.getUser().getId();
-        this.createdAt = posting.getCreatedAt();
+    @QueryProjection
+    public PostingDetailDto(Long postingId, String title, String content, Long userId, LocalDateTime createdAt, String nickname, EAccountType accountType, Long likeCount) {
+        this.id = postingId;
+        this.title = title;
+        this.content = content;
+        this.userId = userId;
+        this.createdAt = createdAt;
 
-        this.displayUserName = posting.getDisplayName();
-        this.likeCount = posting.getLikes().size();
-        this.isLiked = posting.isLikedBy(userOrNull);
+        this.displayUserName = this.getDisplayName(nickname, accountType);
+        this.likeCount = likeCount;
+    }
 
-        List<Comment> comments = posting.getComments();
-        for (Comment comment : comments) {
-            this.comments.add(new CommentDto(comment));
-        }
+    public String getDisplayName(String nickname, EAccountType accountType) {
+        final StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(nickname)
+                .append('(')
+                .append(accountType.toString())
+                .append(')');
+
+        return nameBuilder.toString();
     }
 }

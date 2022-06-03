@@ -1,7 +1,10 @@
 package community.app.service;
 
 import com.querydsl.core.Tuple;
+import community.app.repository.query.CommentQueryRepository;
 import community.app.repository.query.PostingQueryRepository;
+import community.dtos.CommentDto;
+import community.dtos.PostingDetailDto;
 import community.dtos.PostingsDto;
 import community.searches.PostingSearch;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,7 @@ public class PostingService {
     public final UserRepository userRepository;
     public final PostingRepository postingRepository;
     public final PostingQueryRepository postingQueryRepository;
+    public final CommentQueryRepository commentQueryRepository;
 
 
     @Transactional(readOnly = true)
@@ -59,13 +63,21 @@ public class PostingService {
     }
 
     @Transactional(readOnly = true)
-    public Posting getPosting(Long postingId) {
-        Optional<Posting> posting = postingRepository.findById(postingId);
-        if (!posting.isPresent()) {
+    public PostingDetailDto getPosting(Long postingId, Long userId) {
+        PostingDetailDto postingDto = postingQueryRepository.findOne(postingId);
+        if (postingDto == null) {
             throw new PostingNotFound("Posting Not Found");
         }
 
-        return posting.get();
+        // set liked
+        Tuple liked = postingQueryRepository.findLiked(postingId, userId);
+        postingDto.setLiked(Boolean.TRUE.equals(liked.get(1, Boolean.class)));
+
+        // set comment
+        List<CommentDto> commentDtos = commentQueryRepository.findBy(postingId);
+        postingDto.setComments(commentDtos);
+
+        return postingDto;
     }
 
     public Posting createPosting(String title, String content, Long userId, String accountTypeString) {

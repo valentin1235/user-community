@@ -1,8 +1,6 @@
 package community.dtos;
 
 import com.querydsl.core.annotations.QueryProjection;
-import community.app.domain.Posting;
-import community.app.domain.User;
 import community.enums.EAccountType;
 import lombok.Data;
 
