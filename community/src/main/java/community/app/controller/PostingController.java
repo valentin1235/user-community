@@ -3,6 +3,8 @@ package community.app.controller;
 import community.dtos.PostingDetailDto;
 import community.dtos.PostingsDto;
 import community.searches.PostingSearch;
+import community.trace.LogTemplate;
+import community.trace.logtrace.LogTracer;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,7 @@ import java.util.List;
 public class PostingController {
 
     private final PostingService postingService;
+    private final LogTracer logTracer;
 
     @GetMapping("/postings")
     public ResponseEntity getPostings(@RequestAttribute("userId") Long userId,
@@ -40,7 +43,15 @@ public class PostingController {
                                       @RequestParam(value = "offset", defaultValue = "0") int offset,
                                       @RequestParam(value = "limit", defaultValue = "1000") int limit) {
 
-        List<PostingsDto> result = postingService.getPostings(postingSearch, userId, offset, limit);
+        List<PostingsDto> result;
+        LogTemplate<List<PostingsDto>> logger = new LogTemplate<List<PostingsDto>>(logTracer) {
+            @Override
+            protected List<PostingsDto> call() {
+                return postingService.getPostings(postingSearch, userId, offset, limit);
+            }
+        };
+
+        result = logger.execute("PostingController.getPostings");
 
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
