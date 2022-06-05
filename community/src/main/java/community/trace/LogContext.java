@@ -1,20 +1,20 @@
 package community.trace;
 
 import community.trace.logtrace.LogTracer;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-public abstract class LogTemplate<T> {
+@Component
+@RequiredArgsConstructor
+public class LogContext {
 
     private final LogTracer logTracer;
 
-    public LogTemplate(LogTracer logTracer) {
-        this.logTracer = logTracer;
-    }
-
-    public T execute(String message) {
+    public <T> T execute(String message, ILogStrategy<T> strategy) {
         TraceStatus status = null;
         try {
             status = logTracer.begin(message);
-            T result = call();
+            T result = strategy.call();
             logTracer.end(status);
             return result;
         } catch (Exception e) {
@@ -22,6 +22,4 @@ public abstract class LogTemplate<T> {
             throw e;
         }
     }
-
-    protected abstract T call();
 }

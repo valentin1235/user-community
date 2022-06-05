@@ -15,10 +15,6 @@ public class LogTracer implements ILogTraceable {
 
     private final ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>();
 
-    public LogTracer() {
-
-    }
-
     @Override
     public TraceStatus begin(String message) {
         syncTraceId();
