@@ -3,12 +3,10 @@ package community.app.controller;
 import community.dtos.PostingDetailDto;
 import community.dtos.PostingsDto;
 import community.searches.PostingSearch;
-import community.trace.LogContext;
-import community.trace.logtrace.LogTracer;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import community.enums.ELikeResult;
 import community.exceptions.AccountTypeMismatch;
 import community.exceptions.NotAuthorized;
@@ -30,12 +27,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
-public class PostingController {
+@Component
+public class PostingController implements IPostingController {
 
     private final PostingService postingService;
-    private final LogContext logger;
+
+    public PostingController(PostingService postingService) {
+        this.postingService = postingService;
+    }
+
 
     @GetMapping("/postings")
     public ResponseEntity getPostings(@RequestAttribute("userId") Long userId,
@@ -43,9 +43,7 @@ public class PostingController {
                                       @RequestParam(value = "offset", defaultValue = "0") int offset,
                                       @RequestParam(value = "limit", defaultValue = "1000") int limit) {
 
-        List<PostingsDto> result = logger.execute("PostingController.getPostings", () -> {
-            return postingService.getPostings(postingSearch, userId, offset, limit);
-        });
+        List<PostingsDto> result = postingService.getPostings(postingSearch, userId, offset, limit);
 
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
