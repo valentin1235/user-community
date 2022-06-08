@@ -2,6 +2,10 @@
 - Spring Boot을 사용한 간단한 CRUD 게시판 서비스 입니다
 - `Java` `Spring Boot` `Hibernate` `Querydsl` `Mysql`
 
+## 스펙
+- id 'org.springframework.boot' version '2.6.7'
+- openjdk 11.0.12 
+
 ## 데이터베이스 설치
 ```
 docker run --platform linux/amd64 -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=heechul -e MYSQL_DATABASE=heechul -e MYSQL_PASSWORD=heechul -d mysql
