@@ -1,5 +1,6 @@
 ## 설명
 - Spring Boot을 사용한 간단한 CRUD 게시판 서비스 입니다
+- `Java` `Spring Boot` `Hibernate` `Querydsl` `Mysql`
 
 ## 데이터베이스 설치
 ```
