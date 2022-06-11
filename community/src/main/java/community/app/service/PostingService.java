@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class PostingService {
 
     public final LikeRepository likeRepository;
@@ -43,6 +42,15 @@ public class PostingService {
     public final PostingRepository postingRepository;
     public final PostingQueryRepository postingQueryRepository;
     public final CommentQueryRepository commentQueryRepository;
+
+    public PostingService(LikeRepository likeRepository, CommentRepository commentRepository, UserRepository userRepository, PostingRepository postingRepository, PostingQueryRepository postingQueryRepository, CommentQueryRepository commentQueryRepository) {
+        this.likeRepository = likeRepository;
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
+        this.postingRepository = postingRepository;
+        this.postingQueryRepository = postingQueryRepository;
+        this.commentQueryRepository = commentQueryRepository;
+    }
 
 
     @Transactional(readOnly = true)
