@@ -15,10 +15,10 @@ import community.app.repository.UserRepository;
 import community.app.service.PostingService;
 import community.enums.EAccountType;
 import community.enums.ELikeResult;
-import community.exceptions.AccountTypeMismatch;
-import community.exceptions.NotAuthorized;
-import community.exceptions.PostingNotFound;
-import community.exceptions.UserNotFound;
+import community.exception.AccountTypeMismatch;
+import community.exception.NotAuthorized;
+import community.exception.PostingNotFound;
+import community.exception.UserNotFound;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;

@@ -11,11 +11,11 @@ import community.app.repository.CommentRepository;
 import community.app.repository.PostingRepository;
 import community.app.repository.UserRepository;
 import community.enums.EAccountType;
-import community.exceptions.AccountTypeMismatch;
-import community.exceptions.CommentNotFound;
-import community.exceptions.NotAuthorized;
-import community.exceptions.PostingNotFound;
-import community.exceptions.UserNotFound;
+import community.exception.AccountTypeMismatch;
+import community.exception.CommentNotFound;
+import community.exception.NotAuthorized;
+import community.exception.PostingNotFound;
+import community.exception.UserNotFound;
 
 import java.util.Objects;
 import java.util.Optional;

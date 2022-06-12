@@ -14,7 +14,7 @@ apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 group = 'zaritalk'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = "1.9"
 
 repositories {
 	mavenCentral()
@@ -64,3 +64,4 @@ compileQuerydsl {
 configurations {
 	querydsl.extendsFrom compileClasspath
 }
+targetCompatibility = JavaVersion.VERSION_1_9

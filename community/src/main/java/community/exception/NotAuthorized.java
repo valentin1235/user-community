@@ -1,4 +1,4 @@
-package community.exceptions;
+package community.exception;
 
 public class NotAuthorized extends RuntimeException{
 

@@ -1,4 +1,4 @@
-package community.searches;
+package community.searchkey;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,9 +1,9 @@
-package community.interceptors;
+package community.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import community.app.domain.AccountTypeConvertor;
 import community.enums.EAccountType;
-import community.exceptions.NotAuthorized;
+import community.exception.NotAuthorized;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
