@@ -1,4 +1,4 @@
-package community.interceptors;
+package community.interceptor;
 
 
 import org.springframework.context.annotation.Configuration;

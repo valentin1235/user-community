@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import community.app.domain.User;
-import community.exceptions.AccountTypeNotExist;
-import community.exceptions.DuplicateUser;
+import community.exception.AccountTypeNotExist;
+import community.exception.DuplicateUser;
 import community.app.service.UserService;
 
 import javax.validation.Valid;

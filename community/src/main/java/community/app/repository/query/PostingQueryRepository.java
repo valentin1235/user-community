@@ -7,11 +7,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import community.app.domain.QLike;
 import community.app.domain.QPosting;
 import community.app.domain.QUser;
-import community.dtos.PostingDetailDto;
-import community.dtos.PostingsDto;
-import community.dtos.QPostingDetailDto;
-import community.dtos.QPostingsDto;
-import community.searches.PostingSearch;
+import community.dto.PostingDetailDto;
+import community.dto.PostingsDto;
+import community.dto.QPostingDetailDto;
+import community.dto.QPostingsDto;
+import community.searchkey.PostingSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

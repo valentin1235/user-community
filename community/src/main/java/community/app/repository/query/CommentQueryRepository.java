@@ -1,15 +1,13 @@
 package community.app.repository.query;
 
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import community.app.domain.QComment;
 import community.app.domain.QLike;
 import community.app.domain.QPosting;
 import community.app.domain.QUser;
-import community.dtos.CommentDto;
-import community.dtos.PostingDetailDto;
-import community.dtos.QCommentDto;
-import community.dtos.QPostingDetailDto;
+import community.dto.CommentDto;
+import community.dto.QCommentDto;
+import community.dto.QPostingDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

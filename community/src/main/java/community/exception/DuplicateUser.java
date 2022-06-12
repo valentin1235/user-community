@@ -1,4 +1,4 @@
-package community.exceptions;
+package community.exception;
 
 public class DuplicateUser extends RuntimeException{
     public DuplicateUser() {

@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import community.app.service.CommentService;
-import community.exceptions.AccountTypeMismatch;
-import community.exceptions.CommentNotFound;
-import community.exceptions.NotAuthorized;
-import community.exceptions.PostingNotFound;
-import community.exceptions.UserNotFound;
+import community.exception.AccountTypeMismatch;
+import community.exception.CommentNotFound;
+import community.exception.NotAuthorized;
+import community.exception.PostingNotFound;
+import community.exception.UserNotFound;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;

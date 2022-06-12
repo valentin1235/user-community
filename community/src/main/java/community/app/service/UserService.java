@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import community.app.domain.AccountTypeConvertor;
 import community.app.domain.User;
 import community.enums.EAccountType;
-import community.exceptions.AccountTypeNotExist;
-import community.exceptions.DuplicateUser;
+import community.exception.AccountTypeNotExist;
+import community.exception.DuplicateUser;
 import community.app.repository.UserRepository;
 
 import java.util.List;
