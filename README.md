@@ -97,4 +97,4 @@ JPAExpressions.select( // sub-query start
 - [전략 패턴](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4)
 - [프록시 패턴](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-%ED%94%84%EB%A1%9D%EC%8B%9C-%ED%8C%A8%ED%84%B4)
 - [동적 프록시 적용](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-JDK-%EB%8F%99%EC%A0%81-%ED%94%84%EB%A1%9D%EC%8B%9C)
-- []
+- [빈 후처리기 적용](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-%EB%B9%88-%ED%9B%84%EC%B2%98%EB%A6%AC%EA%B8%B0)
