@@ -90,3 +90,11 @@ JPAExpressions.select( // sub-query start
 - 이럴 경우 controller에서 외부 api를 연동하는 등 다른 동작을 하게되면 데이터베이스 커넥션을 오래 가지고 있기 때문에 controller에 대한 확장성이 사라질것으로 판단
 ##### 해결
 - open-in-view 설정을 false로 바꾸어 주어서 service에서 @Transactional이 끝날때 영속성컨텍스트와 db connection을 반환하도록 변경
+
+### < 성능 측정 로그 >
+##### 성능 측정 로그 적용 과정
+- [템플릿 메서드 패턴](https://velog.io/@valentin123/%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4%EC%9D%84-%ED%86%B5%ED%95%9C-%EB%A1%9C%EA%B9%85-%EB%B6%84%EB%A6%AC)
+- [전략 패턴](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4)
+- [프록시 패턴](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-%ED%94%84%EB%A1%9D%EC%8B%9C-%ED%8C%A8%ED%84%B4)
+- [동적 프록시 적용](https://velog.io/@valentin123/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B9%85-JDK-%EB%8F%99%EC%A0%81-%ED%94%84%EB%A1%9D%EC%8B%9C)
+- []
