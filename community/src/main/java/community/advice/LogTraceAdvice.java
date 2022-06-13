@@ -2,7 +2,6 @@ package community.advice;
 
 import community.trace.TraceStatus;
 import community.trace.logtrace.LogTracer;
-import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 

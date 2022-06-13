@@ -6,6 +6,7 @@ import community.trace.logtrace.LogTracer;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,8 +19,11 @@ public class ProxyConfig {
     }
 
     private Advisor getAdvisor(LogTracer logTracer) {
+        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
+        pointcut.setMappedNames("get*");
+
         LogTraceAdvice advice = new LogTraceAdvice(logTracer);
 
-        return new DefaultPointcutAdvisor(Pointcut.TRUE, advice);
+        return new DefaultPointcutAdvisor(pointcut, advice);
     }
 }
