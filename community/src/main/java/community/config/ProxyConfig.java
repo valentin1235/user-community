@@ -1,28 +1,29 @@
 package community.config;
 
 import community.advice.LogTraceAdvice;
-import community.postprocessor.LogTracePostProcessor;
 import community.trace.logtrace.LogTracer;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.Pointcut;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class ProxyConfig {
 
     @Bean
-    public LogTracePostProcessor logTracePostProcessor() {
-        return new LogTracePostProcessor(getAdvisor(new LogTracer()));
-    }
+    public Advisor advisor1() {
+        List<Integer> a = new ArrayList<>();
 
-    private Advisor getAdvisor(LogTracer logTracer) {
-        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
-        pointcut.setMappedNames("get*");
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* community.app.controller..get*(..))");
 
-        LogTraceAdvice advice = new LogTraceAdvice(logTracer);
+        LogTraceAdvice advice = new LogTraceAdvice(new LogTracer());
 
         return new DefaultPointcutAdvisor(pointcut, advice);
     }

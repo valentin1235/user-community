@@ -20,7 +20,7 @@ public class LogTraceAdvice implements MethodInterceptor {
             sb.append(invocation.getClass().getName());
             sb.append('.');
             sb.append(invocation.getMethod());
-            status = logTracer.begin("  @@@@@@@@@@@@@@  " + sb);
+            status = logTracer.begin("  !@!@!@!@!  " + sb);
 
 
             final Object result = invocation.proceed();
